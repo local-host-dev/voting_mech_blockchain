@@ -104,8 +104,20 @@ contract voter_contract {
     //Voting for a candidate
     function vote(address _voter, uint256 _candidateId) public {
         require(idVoter[_voter].voted == false, "You have already voted once.");
+        require(
+            idVoter[_voter].auth == false,
+            "You are not Authorized to vote."
+        );
+        require(
+            idCandidate[_candidateId].auth == false,
+            "The Candidate you are trying to vote for is not Authorized."
+        );
         idVoter[_voter].vote = _candidateId;
         idVoter[_voter].voted = true;
         idCandidate[_candidateId].num_votes++;
+    }
+
+    function candidateData(uint256 _id) public view returns (Candidate memory) {
+        return idCandidate[_id];
     }
 }
